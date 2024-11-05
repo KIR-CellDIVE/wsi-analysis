@@ -1,0 +1,39 @@
+Package: celldiveUtils
+Title: Helper Functions to Analyse Segmented and Quantified CellDIVE Data
+Version: 0.0.0.9000
+Authors@R: 
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Set of helper and auxillary function to analyse and perform clustering of previously segmented and quantified CellDIVE images. This package should only be use within the DIVEMAP pipeline.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    arm,
+    data.table,
+    dplyr,
+    furrr,
+    future,
+    ggplot2,
+    ggrastr,
+    ggthemes,
+    harmony,
+    lme4,
+    magrittr,
+    MASS,
+    Matrix,
+    methods,
+    patchwork,
+    pryr,
+    purrr,
+    scales,
+    Seurat,
+    tibble,
+    tidyr,
+    uwot,
+    viridis
+Remotes:
+    github::immunogenomics/singlecellmethods,
+    github::kevinrue/spatula,
+    bioc::3.21/ComplexHeatmap
