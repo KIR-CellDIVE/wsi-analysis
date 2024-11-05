@@ -1,0 +1,27 @@
+BootStrap: docker
+From: quay.io/jupyter/r-notebook
+
+%files
+    ../celldiveUtils /opt/celldiveUtils 
+    mamba_env.yml mamba_env.yml
+
+
+%environment
+    export LISTEN_PORT=9999
+
+%post
+    mamba env update --name base --file mamba_env.yml && \
+    mamba clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+
+    Rscript -e "devtools::install_github('immunogenomics/presto')"
+    Rscript -e "devtools::install_github('immunogenomics/singlecellmethods')"
+
+    cd /opt/celldiveUtils && Rscript -e "devtools::install()"
+
+%runscript
+    jupyter lab --ip=0.0.0.0 --no-browser --port=$LISTEN_PORT --LabApp.default_url="/lab/workspaces/template?reset"
+
+%help
+    Run this container to perform whole slide image analysis

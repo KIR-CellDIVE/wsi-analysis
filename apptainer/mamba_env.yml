@@ -1,0 +1,28 @@
+channels:
+  - conda-forge
+  - bioconda
+
+dependencies:
+  - r-uwot
+  - r-tidyverse
+  - r-data.table
+  - r-ggthemes
+  - r-ggrepel
+  - r-magrittr
+  - r-ggrastr
+  - r-scales
+  - r-pheatmap
+  - r-ggridges
+  - r-janitor
+  - r-RSpectra
+  - r-stringr
+  - r-circlize
+  - r-harmony
+  - r-furrr
+  - r-lme4
+  - r-future
+  - r-tidytext
+  - r-ggbeeswarm
+  - r-glue
+  - r-geometry
+  - bioconductor-complexheatmap
