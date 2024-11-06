@@ -31,7 +31,7 @@ make_spots <- function(cells, pow=1) {
     spots <- list()
     spots$metadata <- tibble::tibble(
         dplyr::select(cells$metadata, SpotID=CellID, LibraryID, x, y, x_img, y_img),
-        ncells = colSums(snn),
+        ncells = Matrix::colSums(snn),
         area = as.numeric(snn %*% cells$metadata$area)
     )
     spots$intensity <- snn %*% as.matrix(cells$intensity)
@@ -109,12 +109,13 @@ do_umap <- function(obj, embedding, resname) {
 
 
 harmonize <- function(obj, var='LibraryID', theta=1) {
-    fig.size(4, 6)
-    obj$H <- harmony::HarmonyMatrix(
-        obj$V, obj$metadata, var, theta=theta,
-        do_pca=FALSE, plot_convergence=TRUE,
-        epsilon.cluster = -Inf, epsilon.harmony = -Inf, max.iter.cluster = 10, max.iter.harmony = 10
-    )
+    obj$H <- harmony::RunHarmony(
+        obj$V, obj$metadata, var,
+        theta=theta,
+        plot_convergence=TRUE,
+        max_iter = 10,
+        .options = harmony::harmony_options(epsilon.cluster = -Inf, epsilon.harmony = -Inf, max.iter.cluster = 10)
+    ,)
     return(obj)
 }
 

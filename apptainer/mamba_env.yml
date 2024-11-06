@@ -25,4 +25,8 @@ dependencies:
   - r-ggbeeswarm
   - r-glue
   - r-geometry
+  - r-biocmanager
   - bioconductor-complexheatmap
+  - udunits2
+  - r-sf
+  - r-units

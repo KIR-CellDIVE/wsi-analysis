@@ -71,7 +71,7 @@ forest_uni <- function(data_df, sigma_max = Inf, fdr_max=0.05, beta_min=-Inf) {
             ggplot2::geom_hline(yintercept = c(0), linetype = 2) +
 #             geom_hline(yintercept = c(-1, 0, 1), linetype = 2) +
             ggplot2::labs(x = '', y = 'Log2 fold change') +
-            ggplot2::guides(color = FALSE) +
+            ggplot2::guides(color = "none") +
             NULL
 
 }

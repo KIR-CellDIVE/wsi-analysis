@@ -117,7 +117,7 @@ do_harmony <- function(obj, vars, max.iter.cluster = 20, .umap=FALSE, ...) {
 
     if (.umap) {
         ## recompute UMAP on Harmonized PCs
-        obj$umap_after_fname <- tempfile(tmpdir = '/data/srlab/ik936/Roche/data/cache', pattern = 'umap_')
+        obj$umap_after_fname <- tempfile(pattern = 'umap_')
         umap_res <- do_umap(t(obj$Z_cos), obj$umap_after_fname)
         obj$umap_after <- umap_res$embedding
         obj$adj_after <- umap_res$adj
@@ -305,7 +305,7 @@ do_scatter <- function (umap_use, meta_data, label_name, facet_var, no_guides = 
 #         theme_tufte(base_size = base_size) +
 #         theme(panel.background = element_rect(fill = NA, color = "black")) +
         ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(stroke = 1,
-            alpha = 1, shape = 16, size = 4)), alpha = FALSE) +
+            alpha = 1, shape = 16, size = 4)), alpha = "none") +
         ggplot2::scale_color_manual(values = palette_use) + ggplot2::scale_fill_manual(values = palette_use) +
         ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) + ggplot2::labs(x = "UMAP 1",
         y = "UMAP 2")
@@ -328,7 +328,7 @@ do_scatter <- function (umap_use, meta_data, label_name, facet_var, no_guides = 
     if (do_density)
         plt <- plt + ggplot2::geom_density_2d()
     if (no_guides)
-        plt <- plt + ggplot2::guides(col = FALSE, fill = FALSE, alpha = FALSE)
+        plt <- plt + ggplot2::guides(col = "none", fill = "none", alpha = "none")
     if (do_labels) {
         plt <- plt +
 #             geom_text_repel(
@@ -337,27 +337,27 @@ do_scatter <- function (umap_use, meta_data, label_name, facet_var, no_guides = 
 #                 color = "black",
 #                 size = pt_size, alpha = 1, segment.size = 0
 #             ) +
-            ggplot2::geom_label(
+            ggrepel::geom_label_repel(
                 data = data.table::data.table(plt_df)[, .(X1 = mean(X1), X2 = mean(X2)), by = label_name],
                 label.size = NA, ggplot2::aes_string(label = label_name, color = label_name),
 #                 color = "black",
                 fill = 'white',
                 size = pt_size, alpha = .6, segment.size = 0
             ) +
-            ggplot2::geom_text(
+            ggrepel::geom_text_repel(
                 data = data.table::data.table(plt_df)[, .(X1 = mean(X1), X2 = mean(X2)), by = label_name],
-                label.size = NA, ggplot2::aes_string(label = label_name, color = label_name),
+                ggplot2::aes_string(label = label_name, color = label_name),
 #                 color = "black",
                 size = pt_size, alpha = 1, segment.size = 0
             ) +
-            ggplot2::guides(col = FALSE, fill = FALSE)
+            ggplot2::guides(col = "none", fill = "none")
     }
     return(plt)
 }
 
 
 setupVals <- function(data_mat, feature, qlo, qhi) {
-    .x <- data_mat[feature, , drop = FALSE] %>% methods::as("dgTMatrix")
+    .x <- data_mat[feature, , drop = FALSE] %>% methods::as("dMatrix") %>% methods::as("generalMatrix") %>% methods::as("TsparseMatrix")
     cutoffs <- quantileSparse(.x, c(qlo, qhi))
     cutoffs[2] <- max(cutoffs[2], min(.x@x))
     if (qlo == 0 & qhi == 1) {
@@ -420,7 +420,7 @@ plotFeatures <- function(data_mat, dim_df, features, nrow = 1,
             NULL
         if (no_guide) {
             plt <- plt +
-            ggplot2::guides(color = FALSE)
+            ggplot2::guides(color = "none")
         }
 
         if (sum(is.na(.xlim)) < 2)

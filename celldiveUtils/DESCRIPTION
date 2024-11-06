@@ -11,12 +11,14 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
     arm,
+    ComplexHeatmap,
     data.table,
     dplyr,
     furrr,
     future,
     ggplot2,
     ggrastr,
+    ggrepel,
     ggthemes,
     harmony,
     lme4,
@@ -25,15 +27,19 @@ Imports:
     Matrix,
     methods,
     patchwork,
+    presto,
     pryr,
     purrr,
     scales,
     Seurat,
+    singlecellmethods,
+    spatula,
     tibble,
     tidyr,
     uwot,
     viridis
 Remotes:
     github::immunogenomics/singlecellmethods,
-    github::kevinrue/spatula,
+    github::korsunskylab/spatula,
+    github::immunogenomics/presto,
     bioc::3.21/ComplexHeatmap
