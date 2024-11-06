@@ -2,7 +2,7 @@ BootStrap: docker
 From: quay.io/jupyter/r-notebook
 
 %files
-    ../celldiveUtils /opt/celldiveUtils 
+    ../celldiveUtils /opt/celldiveUtils
     mamba_env.yml mamba_env.yml
 
 
@@ -15,10 +15,10 @@ From: quay.io/jupyter/r-notebook
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-    Rscript -e "devtools::install_github('immunogenomics/presto')"
-    Rscript -e "devtools::install_github('immunogenomics/singlecellmethods')"
+    Rscript -e "BiocManager::install('ComplexHeatmap', version = '3.20', update = FALSE)"
+    Rscript -e "BiocManager::install('korsunskylab/spatula', update = FALSE)"
 
-    cd /opt/celldiveUtils && Rscript -e "devtools::install()"
+    cd /opt/celldiveUtils && Rscript -e "devtools::install(upgrade='never')"
 
 %runscript
     jupyter lab --ip=0.0.0.0 --no-browser --port=$LISTEN_PORT --LabApp.default_url="/lab/workspaces/template?reset"
