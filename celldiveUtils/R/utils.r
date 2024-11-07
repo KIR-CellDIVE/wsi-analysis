@@ -128,7 +128,7 @@ do_harmony <- function(obj, vars, max.iter.cluster = 20, .umap=FALSE, ...) {
 
 
 
-
+#' @export
 do_umap <- function(
     Xmat, cache_fname=NULL,
     .spread=0.3, .min_dist=0.05,
