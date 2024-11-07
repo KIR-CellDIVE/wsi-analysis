@@ -168,6 +168,9 @@ cython_debug/
 # R objects
 *.rds
 
+# R history files
+*.Rhistory
+
 # results folders
 segmentation/
 analysis/
