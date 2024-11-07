@@ -19,6 +19,7 @@ pal <- list(
     Lympho_vascular = 'green'
 )
 
+#' @export
 make_spots <- function(cells, pow=1) {
     ## Do Delaunay triangulation to find spatial neighbors
     snn <- spatula::getSpatialNeighbors(dplyr::select(cells$metadata, x, y))
@@ -50,13 +51,14 @@ plotFeatures_split <- function(
 }
 
 
-
+#' @export
 do_norm <- function(obj) {
     obj[['intensity_norm']] <- sweep(obj$intensity, 1, obj$metadata$area, '/')
     return(obj)
 }
 
 
+#' @export
 do_scale <- function(obj, z_thresh, within_batch=FALSE) {
     message("SCALE")
     if (within_batch) {
@@ -83,6 +85,8 @@ do_scale <- function(obj, z_thresh, within_batch=FALSE) {
     return(obj)
 }
 
+
+#' @export
 do_pca <- function(obj) {
     message('PCA')
     svd_res <- svd(t(as.matrix(obj$z)))
@@ -100,6 +104,7 @@ do_pca <- function(obj) {
 }
 
 
+#' @export
 do_umap <- function(obj, embedding, resname) {
     message('UMAP')
     obj[[resname]] <- uwot::umap(obj[[embedding]], ret_extra = 'fgraph')
@@ -108,6 +113,7 @@ do_umap <- function(obj, embedding, resname) {
 }
 
 
+#' @export
 harmonize <- function(obj, var='LibraryID', theta=1) {
     obj$H <- harmony::RunHarmony(
         obj$V, obj$metadata, var,
@@ -120,6 +126,7 @@ harmonize <- function(obj, var='LibraryID', theta=1) {
 }
 
 
+#' @export
 do_louvain <- function(obj, embedding, resolutions, pow=1) {
     adjmat <- obj[[embedding]]$fgraph
     diag(adjmat) <- 1
@@ -132,6 +139,7 @@ do_louvain <- function(obj, embedding, resolutions, pow=1) {
 }
 
 
+#' @export
 plot_heatmap <- function(markers, features, .scale=FALSE) {
     X <- markers %>%
         # subset(feature %in% c('ASMA', 'CD146', 'CD3', 'CD31', 'CD45', 'CD90', 'PDPN', 'CD68')) %>%
@@ -147,6 +155,8 @@ plot_heatmap <- function(markers, features, .scale=FALSE) {
     ComplexHeatmap::Heatmap(X, column_names_rot = 45)
 }
 
+
+#' @export
 do_markers <- function(obj) {
     obj$Markers <- apply(obj$Clusters, 2, function(y) {
         presto::wilcoxauc(t(obj$z), y)

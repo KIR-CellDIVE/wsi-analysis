@@ -275,6 +275,8 @@ do_cluster <- function(
 #     return(obj)
 # }
 
+
+#' @export
 do_scatter <- function (umap_use, meta_data, label_name, facet_var, no_guides = TRUE,
     do_labels = TRUE, nice_names, palette_use = colors_overload,
     pt_size = 4, point_size = 0.5, pt_shape = ".", base_size = 20,
@@ -390,6 +392,8 @@ quantileSparse <- function(.x, qlist) {
 ## TODO: allow for different cutoffs, for each marker
 ## TODO: somehow draw canvas first, then do plotting?
 
+
+#' @export
 plotFeatures <- function(data_mat, dim_df, features, nrow = 1,
                          qlo = 0.05, qhi = 1, order_by_expression = FALSE,
                          pt_shape = 16, pt_size = .5, no_guide = FALSE,
