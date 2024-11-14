@@ -105,9 +105,9 @@ do_pca <- function(obj) {
 
 
 #' @export
-do_umap <- function(obj, embedding, resname) {
+do_umap <- function(obj, embedding, resname, ...) {
     message('UMAP')
-    obj[[resname]] <- uwot::umap(obj[[embedding]], ret_extra = 'fgraph')
+    obj[[resname]] <- uwot::umap(obj[[embedding]], ret_extra = 'fgraph', ...)
     colnames(obj[[resname]]$embedding) <- paste0('UMAP', 1:2)
     return(obj)
 }

@@ -1,6 +1,7 @@
 colors_overload <- union(ggthemes::tableau_color_pal('Tableau 20')(20), RColorBrewer::brewer.pal(12, 'Set3'))
 colors_overload <- c(colors_overload, 'black')
 
+#' @export
 fig.size <- function (height, width) {
     options(repr.plot.height = height, repr.plot.width = width)
 }
@@ -128,7 +129,6 @@ do_harmony <- function(obj, vars, max.iter.cluster = 20, .umap=FALSE, ...) {
 
 
 
-#' @export
 do_umap <- function(
     Xmat, cache_fname=NULL,
     .spread=0.3, .min_dist=0.05,
