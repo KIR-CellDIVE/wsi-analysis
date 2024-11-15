@@ -3,6 +3,7 @@ From: quay.io/jupyter/r-notebook
 
 %files
     ../celldiveUtils /opt/celldiveUtils
+    ../notebooks /opt/analysis/notebooks
     mamba_env.yml mamba_env.yml
 
 
@@ -21,7 +22,7 @@ From: quay.io/jupyter/r-notebook
     cd /opt/celldiveUtils && Rscript -e "devtools::install(upgrade='never')"
 
 %runscript
-    jupyter lab --ip=0.0.0.0 --no-browser --port=$LISTEN_PORT --LabApp.default_url="/lab/workspaces/template?reset"
+    jupyter lab --ip=0.0.0.0 --no-browser --port=$LISTEN_PORT --LabApp.default_url="/lab/workspaces/template?reset" --notebook-dir="/opt/analysis"
 
 %help
     Run this container to perform whole slide image analysis
