@@ -55,7 +55,7 @@ source ~/.profile
 If you have followed the installation step you should be able to run the whole-slide image segmentation Jupyter Notebook server now. If you are on `Windows` and you use `WSL`, first open `PowerShell` and enter the previously created WSL environment `Ubuntu` as the user `ubuntu` if you haven't already done so:
 
 ```bash
-wsl -d Ubuntu -u ubuntu
+wsl -d Ubuntu_DIVEMAP -u ubuntu
 ```
 
 Once you are in the `WSL` environment you can start the analysis container by typing
