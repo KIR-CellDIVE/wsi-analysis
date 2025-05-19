@@ -21,24 +21,51 @@ pal <- list(
 
 #' @export
 make_spots <- function(cells, pow=1) {
-    ## Do Delaunay triangulation to find spatial neighbors
-    snn <- spatula::getSpatialNeighbors(dplyr::select(cells$metadata, x, y))
-    snn <- snn + Matrix::Diagonal(n=nrow(snn)) ## add self as neighbor
-    for (i in seq_len(pow-1)) {
-        snn <- crossprod(snn)
-    }
+    snn <- Matrix::Diagonal(n = nrow(cells$metadata))  ## Identity matrix
 
-    ## Pool information from neighboring cells to define spot
     spots <- list()
     spots$metadata <- tibble::tibble(
-        dplyr::select(cells$metadata, SpotID=CellID, LibraryID, x, y, x_img, y_img),
+        dplyr::select(cells$metadata, SpotID = CellID, LibraryID, x, y, x_img, y_img),
         ncells = Matrix::colSums(snn),
-        area = as.numeric(snn %*% cells$metadata$area)
+        area = cells$metadata$area  ## each cell's own area (no pooling)
     )
-    spots$intensity <- snn %*% as.matrix(cells$intensity)
+    spots$intensity <- cells$intensity  ## directly copy intensity
+
     return(spots)
 }
 
+
+safe_make_spots <- function(cells, pow = 1, batch_size = 5000) {
+    ## Split cells into batches
+    n <- nrow(cells$metadata)
+    split_indices <- split(seq_len(n), ceiling(seq_len(n) / batch_size))
+
+    spots_list <- list()
+
+    for (i in seq_along(split_indices)) {
+        idx <- split_indices[[i]]
+
+        cells_batch <- list(
+            metadata = cells$metadata[idx, , drop = FALSE],
+            intensity = cells$intensity[idx, , drop = FALSE]
+        )
+
+        ## Now call plain make_spots
+        spots_batch <- make_spots(cells_batch, pow = pow)
+
+        spots_list[[i]] <- spots_batch
+
+        gc()
+    }
+
+    ## Combine results
+    all_spots <- list(
+        metadata = dplyr::bind_rows(lapply(spots_list, `[[`, "metadata")),
+        intensity = do.call(rbind, lapply(spots_list, `[[`, "intensity"))
+    )
+
+    return(all_spots)
+}
 
 plotFeatures_split <- function(
     data_mat, dim_df, features, split_by, nrow = 1, qlo = 0.05, qhi = 1,
